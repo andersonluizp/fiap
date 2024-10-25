@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-admin
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: kong
+  ports:
+  - name: admin
+    protocol: TCP
+    port: {{ .Values.service.portAdmin }}
+    targetPort: 8001
+  - name: admin-ssl
+    protocol: TCP
+    port: {{ .Values.service.portAdminSSL }}
+    targetPort: 8444
+  type: {{ .Values.service.typeAdmin }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-proxy
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    app: kong
+  ports:
+  - name: proxy
+    protocol: TCP
+    port: {{ .Values.service.portProxy }}
+    targetPort: 8000
+  - name: proxy-ssl
+    protocol: TCP
+    port: {{ .Values.service.portProxySSL }}
+    targetPort: 8443
+  type: {{ .Values.service.typeProxy }}
+
